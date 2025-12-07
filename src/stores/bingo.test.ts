@@ -66,27 +66,34 @@ describe('useBingoStore', () => {
     });
   });
 
-  describe('generateBingo75', () => {
+  describe('Bingo75 Card Generation', () => {
     it('should create a 5x5 grid', () => {
       const store = useBingoStore();
-      const card = store.generateBingo75();
+      store.generateCards('75', 1);
+      const card = store.cards75[0];
 
+      expect(card).toBeDefined();
       expect(card).toHaveLength(5);
-      card.forEach((row) => {
+      card?.forEach((row) => {
         expect(row).toHaveLength(5);
       });
     });
 
     it('should have FREE in center position', () => {
       const store = useBingoStore();
-      const card = store.generateBingo75();
+      store.generateCards('75', 1);
+      const card = store.cards75[0];
 
-      expect(card[2]?.[2]).toBe('FREE');
+      expect(card?.[2]?.[2]).toBe('FREE');
     });
 
     it('should have numbers in correct ranges for each column', () => {
       const store = useBingoStore();
-      const card = store.generateBingo75();
+      store.generateCards('75', 1);
+      const card = store.cards75[0];
+
+      expect(card).toBeDefined();
+      if (!card) return;
 
       const ranges = [
         { min: 1, max: 15 }, // B
@@ -120,7 +127,11 @@ describe('useBingoStore', () => {
 
     it('should have unique numbers in each column', () => {
       const store = useBingoStore();
-      const card = store.generateBingo75();
+      store.generateCards('75', 1);
+      const card = store.cards75[0];
+
+      expect(card).toBeDefined();
+      if (!card) return;
 
       for (let col = 0; col < 5; col++) {
         const columnValues: number[] = [];
@@ -138,20 +149,26 @@ describe('useBingoStore', () => {
     });
   });
 
-  describe('generateBingo90', () => {
+  describe('Bingo90 Card Generation', () => {
     it('should create a 3x9 grid', () => {
       const store = useBingoStore();
-      const card = store.generateBingo90();
+      store.generateCards('90', 1);
+      const card = store.cards90[0];
 
+      expect(card).toBeDefined();
       expect(card).toHaveLength(3);
-      card.forEach((row) => {
+      card?.forEach((row) => {
         expect(row).toHaveLength(9);
       });
     });
 
     it('should have exactly 15 numbers total', () => {
       const store = useBingoStore();
-      const card = store.generateBingo90();
+      store.generateCards('90', 1);
+      const card = store.cards90[0];
+
+      expect(card).toBeDefined();
+      if (!card) return;
 
       const numbers = card.flat().filter((val) => val !== null);
       expect(numbers).toHaveLength(15);
@@ -159,7 +176,11 @@ describe('useBingoStore', () => {
 
     it('should have exactly 5 numbers per row', () => {
       const store = useBingoStore();
-      const card = store.generateBingo90();
+      store.generateCards('90', 1);
+      const card = store.cards90[0];
+
+      expect(card).toBeDefined();
+      if (!card) return;
 
       card.forEach((row) => {
         const numbers = row.filter((val) => val !== null);
@@ -169,7 +190,11 @@ describe('useBingoStore', () => {
 
     it('should have numbers in correct ranges for each column', () => {
       const store = useBingoStore();
-      const card = store.generateBingo90();
+      store.generateCards('90', 1);
+      const card = store.cards90[0];
+
+      expect(card).toBeDefined();
+      if (!card) return;
 
       for (let col = 0; col < 9; col++) {
         const columnNumbers: number[] = [];
@@ -193,7 +218,11 @@ describe('useBingoStore', () => {
 
     it('should have at least 1 number per column', () => {
       const store = useBingoStore();
-      const card = store.generateBingo90();
+      store.generateCards('90', 1);
+      const card = store.cards90[0];
+
+      expect(card).toBeDefined();
+      if (!card) return;
 
       for (let col = 0; col < 9; col++) {
         const columnNumbers = card.map((row) => row[col]).filter((val) => val !== null);
@@ -205,7 +234,11 @@ describe('useBingoStore', () => {
 
     it('should have numbers sorted in ascending order within each column', () => {
       const store = useBingoStore();
-      const card = store.generateBingo90();
+      store.generateCards('90', 1);
+      const card = store.cards90[0];
+
+      expect(card).toBeDefined();
+      if (!card) return;
 
       for (let col = 0; col < 9; col++) {
         const columnNumbers = card
@@ -220,41 +253,6 @@ describe('useBingoStore', () => {
           }
         }
       }
-    });
-  });
-
-  describe('getRandomNumbers', () => {
-    it('should generate requested count of numbers', () => {
-      const store = useBingoStore();
-      const numbers = store.getRandomNumbers(1, 100, 10);
-
-      expect(numbers).toHaveLength(10);
-    });
-
-    it('should generate unique numbers', () => {
-      const store = useBingoStore();
-      const numbers = store.getRandomNumbers(1, 100, 20);
-
-      const uniqueNumbers = new Set(numbers);
-      expect(uniqueNumbers.size).toBe(20);
-    });
-
-    it('should generate numbers within range', () => {
-      const store = useBingoStore();
-      const numbers = store.getRandomNumbers(10, 20, 5);
-
-      numbers.forEach((num) => {
-        expect(num).toBeGreaterThanOrEqual(10);
-        expect(num).toBeLessThanOrEqual(20);
-      });
-    });
-
-    it('should handle small ranges', () => {
-      const store = useBingoStore();
-      const numbers = store.getRandomNumbers(1, 5, 5);
-
-      expect(numbers).toHaveLength(5);
-      expect(new Set(numbers).size).toBe(5);
     });
   });
 });

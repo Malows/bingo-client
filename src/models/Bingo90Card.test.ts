@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { Bingo90Card } from './Bingo90Card';
-import { BINGO_90_CONSTANTS } from './BingoCard';
+import { BINGO_90_CONSTANTS, BingoTypes } from './BingoCard';
 import type { BingoCell } from './BingoCard';
 
 describe('Bingo90Card', () => {
@@ -256,7 +256,7 @@ describe('Bingo90Card', () => {
     it('should throw error for invalid type', () => {
       const invalidJson = {
         id: 'test',
-        type: '75' as const,
+        type: BingoTypes.BINGO_75,
         grid: [],
       };
 

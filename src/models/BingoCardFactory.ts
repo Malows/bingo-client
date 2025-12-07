@@ -1,5 +1,5 @@
 import type { BingoCard, BingoCardJSON, BingoType } from './BingoCard';
-import { BINGO_TYPES } from './BingoCard';
+import { BingoTypes } from './BingoCard';
 import { Bingo75Card } from './Bingo75Card';
 import { Bingo90Card } from './Bingo90Card';
 
@@ -16,14 +16,16 @@ export class BingoCardFactory {
    */
   static create(type: BingoType, id?: string): BingoCard {
     switch (type) {
-      case BINGO_TYPES.BINGO_75:
+      case '75':
         return new Bingo75Card(id);
 
-      case BINGO_TYPES.BINGO_90:
+      case '90':
         return new Bingo90Card(id);
 
-      default:
-        throw new Error(`Unknown bingo type: ${type}`);
+      default: {
+        const exhaustiveCheck: never = type;
+        throw new Error(`Unknown bingo type: ${String(exhaustiveCheck)}`);
+      }
     }
   }
 
@@ -53,14 +55,16 @@ export class BingoCardFactory {
    */
   static fromJSON(json: BingoCardJSON): BingoCard {
     switch (json.type) {
-      case BINGO_TYPES.BINGO_75:
+      case '75':
         return Bingo75Card.fromJSON(json);
 
-      case BINGO_TYPES.BINGO_90:
+      case '90':
         return Bingo90Card.fromJSON(json);
 
-      default:
-        throw new Error(`Unknown bingo type in JSON: ${json.type}`);
+      default: {
+        const exhaustiveCheck: never = json.type;
+        throw new Error(`Unknown bingo type in JSON: ${String(exhaustiveCheck)}`);
+      }
     }
   }
 
@@ -70,7 +74,7 @@ export class BingoCardFactory {
    * @returns true si es válido, false en caso contrario
    */
   static isValidType(type: string): type is BingoType {
-    return Object.values(BINGO_TYPES).includes(type as BingoType);
+    return (Object.values(BingoTypes) as string[]).includes(type);
   }
 
   /**
@@ -78,6 +82,6 @@ export class BingoCardFactory {
    * @returns Array con los tipos disponibles
    */
   static getAvailableTypes(): BingoType[] {
-    return Object.values(BINGO_TYPES);
+    return Object.values(BingoTypes);
   }
 }

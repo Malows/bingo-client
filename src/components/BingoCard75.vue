@@ -7,11 +7,12 @@
     </div>
     <div class="bingo-grid">
       <div v-for="(row, rIndex) in card" :key="rIndex" class="bingo-row">
-        <div 
-          v-for="(cell, cIndex) in row" 
-          :key="cIndex" 
-          class="bingo-cell"
+        <div
+          v-for="(cell, cIndex) in row"
+          :key="cIndex"
+          class="bingo-cell cursor-pointer"
           :class="{ 'free-space': cell === 'FREE' }"
+          @click="$emit('toggle-mark', rIndex, cIndex)"
         >
           <span v-if="cell === 'FREE'">FREE</span>
           <span v-else>{{ cell }}</span>
@@ -24,9 +25,8 @@
 <script setup lang="ts">
 import type { Bingo75Card } from 'src/stores/bingo';
 
-defineProps<{
-  card: Bingo75Card;
-}>();
+defineProps<{ card: Bingo75Card }>();
+defineEmits<{ (e: 'toggle-mark', row: number, col: number): void }>();
 </script>
 
 <style scoped>
@@ -40,7 +40,7 @@ defineProps<{
 .bingo-header {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  background-color: #1976D2;
+  background-color: #1976d2;
   color: white;
   font-weight: bold;
 }

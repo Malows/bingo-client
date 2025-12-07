@@ -1,11 +1,19 @@
+<script setup lang="ts">
+import type { Bingo90Card } from 'src/stores/bingo';
+
+defineProps<{ card: Bingo90Card }>();
+defineEmits<{ (e: 'toggle-mark', row: number, col: number): void }>();
+</script>
+
 <template>
   <div class="bingo-card-90">
     <div class="bingo-grid-90">
       <div v-for="(row, rIndex) in card" :key="rIndex" class="bingo-row-90">
-        <div 
-          v-for="(cell, cIndex) in row" 
-          :key="cIndex" 
-          class="bingo-cell-90"
+        <div
+          v-for="(cell, cIndex) in row"
+          :key="cIndex"
+          class="bingo-cell-90 cursor-pointer"
+          @click="$emit('toggle-mark', rIndex, cIndex)"
         >
           <span v-if="cell !== null">{{ cell }}</span>
           <span v-else class="empty-cell"></span>
@@ -15,17 +23,9 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import type { Bingo90Card } from 'src/stores/bingo';
-
-defineProps<{
-  card: Bingo90Card;
-}>();
-</script>
-
 <style scoped>
 .bingo-card-90 {
-  border: 4px solid #D32F2F; /* Red border typical of UK bingo tickets */
+  border: 4px solid #d32f2f; /* Red border typical of UK bingo tickets */
   width: 100%;
   max-width: 600px;
   background: white;

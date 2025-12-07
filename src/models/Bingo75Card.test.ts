@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { Bingo75Card } from './Bingo75Card';
-import { BINGO_75_CONSTANTS } from './BingoCard';
+import { BINGO_75_CONSTANTS, BingoTypes } from './BingoCard';
 import type { BingoCell } from './BingoCard';
 
 // Helper para acceso seguro al grid en tests
@@ -248,7 +248,7 @@ describe('Bingo75Card', () => {
     it('should throw error for invalid type', () => {
       const invalidJson = {
         id: 'test',
-        type: '90' as const,
+        type: BingoTypes.BINGO_90,
         grid: [],
       };
 

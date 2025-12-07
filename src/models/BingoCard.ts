@@ -1,9 +1,9 @@
-export const BINGO_TYPES = {
-  BINGO_75: '75',
-  BINGO_90: '90',
-} as const;
+export enum BingoTypes {
+  BINGO_75 = '75',
+  BINGO_90 = '90',
+}
 
-export type BingoType = (typeof BINGO_TYPES)[keyof typeof BINGO_TYPES];
+export type BingoType = '75' | '90';
 
 export const BINGO_75_CONSTANTS = {
   ROWS: 5,

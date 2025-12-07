@@ -1,9 +1,9 @@
 import type { BingoCard, BingoCell, BingoCardJSON } from './BingoCard';
-import { BINGO_TYPES, BINGO_90_CONSTANTS } from './BingoCard';
+import { BingoTypes, BINGO_90_CONSTANTS } from './BingoCard';
 
 export class Bingo90Card implements BingoCard {
   readonly id: string;
-  readonly type: '90' = BINGO_TYPES.BINGO_90 as '90';
+  readonly type: '90' = BingoTypes.BINGO_90;
   readonly grid: BingoCell[][];
 
   constructor(id?: string, grid?: BingoCell[][]) {
@@ -65,7 +65,7 @@ export class Bingo90Card implements BingoCard {
   }
 
   static fromJSON(json: BingoCardJSON): Bingo90Card {
-    if (json.type !== BINGO_TYPES.BINGO_90) {
+    if (json.type !== '90') {
       throw new Error('Invalid card type for Bingo90Card');
     }
     return new Bingo90Card(json.id, json.grid);
@@ -91,14 +91,14 @@ export class Bingo90Card implements BingoCard {
       try {
         const gridRaw = this.tryGenerateBingo90Raw();
 
-        return gridRaw.map((rowArr, rIdx) =>
-          rowArr.map((val, cIdx) => ({
+        return gridRaw.map((rowArr) =>
+          rowArr.map((val) => ({
             id: crypto.randomUUID(),
             value: val,
             marked: false,
           })),
         );
-      } catch (e) {
+      } catch {
         attempts++;
       }
     }
