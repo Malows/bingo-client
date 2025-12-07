@@ -34,7 +34,7 @@ export interface BingoCell {
 
 export interface BingoCard {
   readonly id: string;
-  readonly type: BingoType;
+  readonly type: BingoTypes;
   readonly grid: BingoCell[][];
 
   checkLine(): boolean;
@@ -46,6 +46,6 @@ export interface BingoCard {
 
 export interface BingoCardJSON {
   id: string;
-  type: BingoType;
+  type: BingoTypes;
   grid: BingoCell[][];
 }

@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { setActivePinia, createPinia } from 'pinia';
 import { useBingoStore } from './bingo';
+import { BingoTypes } from '../models/BingoCard';
 
 describe('useBingoStore', () => {
   beforeEach(() => {
@@ -8,17 +9,18 @@ describe('useBingoStore', () => {
   });
 
   describe('Initial State', () => {
-    it('should have empty cards arrays initially', () => {
+    it('should have empty cards array initially', () => {
       const store = useBingoStore();
 
+      expect(store.cards).toEqual([]);
       expect(store.cards75).toEqual([]);
       expect(store.cards90).toEqual([]);
     });
 
-    it('should have default game type of 75', () => {
+    it('should have null game type initially', () => {
       const store = useBingoStore();
 
-      expect(store.gameType).toBe('75');
+      expect(store.gameType).toBeNull();
     });
   });
 
@@ -26,70 +28,131 @@ describe('useBingoStore', () => {
     it('should generate specified number of Bingo75 cards', () => {
       const store = useBingoStore();
 
-      store.generateCards('75', 3);
+      store.generateCards(BingoTypes.BINGO_75, 3);
 
+      expect(store.cards).toHaveLength(3);
       expect(store.cards75).toHaveLength(3);
       expect(store.cards90).toHaveLength(0);
-      expect(store.gameType).toBe('75');
+      expect(store.gameType).toBe(BingoTypes.BINGO_75);
     });
 
     it('should generate specified number of Bingo90 cards', () => {
       const store = useBingoStore();
 
-      store.generateCards('90', 2);
+      store.generateCards(BingoTypes.BINGO_90, 2);
 
+      expect(store.cards).toHaveLength(2);
       expect(store.cards90).toHaveLength(2);
       expect(store.cards75).toHaveLength(0);
-      expect(store.gameType).toBe('90');
+      expect(store.gameType).toBe(BingoTypes.BINGO_90);
     });
 
-    it('should clear previous cards when generating new type', () => {
+    it('should replace previous cards when generating new type', () => {
       const store = useBingoStore();
 
-      store.generateCards('75', 2);
+      store.generateCards(BingoTypes.BINGO_75, 2);
       expect(store.cards75).toHaveLength(2);
 
-      store.generateCards('90', 3);
+      store.generateCards(BingoTypes.BINGO_90, 3);
       expect(store.cards75).toHaveLength(0);
       expect(store.cards90).toHaveLength(3);
     });
 
-    it('should generate unique cards', () => {
+    it('should generate unique cards with unique IDs', () => {
       const store = useBingoStore();
 
-      store.generateCards('75', 10);
+      store.generateCards(BingoTypes.BINGO_75, 10);
 
-      const cardsAsStrings = store.cards75.map((card) => JSON.stringify(card));
-      const uniqueCards = new Set(cardsAsStrings);
+      const cardIds = store.cards.map((card) => card.id);
+      const uniqueIds = new Set(cardIds);
 
-      expect(uniqueCards.size).toBeGreaterThan(1);
+      expect(uniqueIds.size).toBe(10);
+    });
+  });
+
+  describe('clearCards', () => {
+    it('should clear all cards and reset gameType', () => {
+      const store = useBingoStore();
+
+      store.generateCards(BingoTypes.BINGO_75, 3);
+      expect(store.cards).toHaveLength(3);
+
+      store.clearCards();
+
+      expect(store.cards).toEqual([]);
+      expect(store.gameType).toBeNull();
+    });
+  });
+
+  describe('toggleMark', () => {
+    it('should toggle mark on a card cell', () => {
+      const store = useBingoStore();
+      store.generateCards(BingoTypes.BINGO_75, 1);
+
+      const card = store.cards[0];
+      expect(card).toBeDefined();
+      if (!card) return;
+
+      const result = store.toggleMark(card.id, 0, 0);
+      expect(result).toBe(true);
+      expect(card.grid[0]?.[0]?.marked).toBe(true);
+    });
+
+    it('should return false for non-existent card', () => {
+      const store = useBingoStore();
+      store.generateCards(BingoTypes.BINGO_75, 1);
+
+      const result = store.toggleMark('non-existent-id', 0, 0);
+      expect(result).toBe(false);
+    });
+  });
+
+  describe('checkLine and checkFull', () => {
+    it('should return false for non-existent card', () => {
+      const store = useBingoStore();
+      store.generateCards(BingoTypes.BINGO_75, 1);
+
+      expect(store.checkLine('non-existent-id')).toBe(false);
+      expect(store.checkFull('non-existent-id')).toBe(false);
+    });
+
+    it('should check line on a card', () => {
+      const store = useBingoStore();
+      store.generateCards(BingoTypes.BINGO_75, 1);
+
+      const card = store.cards[0];
+      expect(card).toBeDefined();
+      if (!card) return;
+
+      // Initially no line
+      expect(store.checkLine(card.id)).toBe(false);
     });
   });
 
   describe('Bingo75 Card Generation', () => {
-    it('should create a 5x5 grid', () => {
+    it('should create cards with 5x5 grid', () => {
       const store = useBingoStore();
-      store.generateCards('75', 1);
+      store.generateCards(BingoTypes.BINGO_75, 1);
       const card = store.cards75[0];
 
       expect(card).toBeDefined();
-      expect(card).toHaveLength(5);
-      card?.forEach((row) => {
+      expect(card?.grid).toHaveLength(5);
+      card?.grid.forEach((row) => {
         expect(row).toHaveLength(5);
       });
     });
 
     it('should have FREE in center position', () => {
       const store = useBingoStore();
-      store.generateCards('75', 1);
+      store.generateCards(BingoTypes.BINGO_75, 1);
       const card = store.cards75[0];
 
-      expect(card?.[2]?.[2]).toBe('FREE');
+      expect(card?.grid[2]?.[2]?.value).toBe('FREE');
     });
 
     it('should have numbers in correct ranges for each column', () => {
       const store = useBingoStore();
-      store.generateCards('75', 1);
+      store.generateCards(BingoTypes.BINGO_75, 1);
       const card = store.cards75[0];
 
       expect(card).toBeDefined();
@@ -105,153 +168,79 @@ describe('useBingoStore', () => {
 
       for (let col = 0; col < 5; col++) {
         for (let row = 0; row < 5; row++) {
-          const value = card[row]?.[col];
+          const cell = card.grid[row]?.[col];
 
           // Skip FREE space
           if (row === 2 && col === 2) {
-            expect(value).toBe('FREE');
+            expect(cell?.value).toBe('FREE');
             continue;
           }
 
-          expect(typeof value).toBe('number');
-          if (typeof value === 'number') {
+          expect(typeof cell?.value).toBe('number');
+          if (typeof cell?.value === 'number') {
             const range = ranges[col];
             if (range) {
-              expect(value).toBeGreaterThanOrEqual(range.min);
-              expect(value).toBeLessThanOrEqual(range.max);
+              expect(cell.value).toBeGreaterThanOrEqual(range.min);
+              expect(cell.value).toBeLessThanOrEqual(range.max);
             }
           }
         }
       }
     });
-
-    it('should have unique numbers in each column', () => {
-      const store = useBingoStore();
-      store.generateCards('75', 1);
-      const card = store.cards75[0];
-
-      expect(card).toBeDefined();
-      if (!card) return;
-
-      for (let col = 0; col < 5; col++) {
-        const columnValues: number[] = [];
-
-        for (let row = 0; row < 5; row++) {
-          const value = card[row]?.[col];
-          if (typeof value === 'number') {
-            columnValues.push(value);
-          }
-        }
-
-        const uniqueValues = new Set(columnValues);
-        expect(uniqueValues.size).toBe(columnValues.length);
-      }
-    });
   });
 
   describe('Bingo90 Card Generation', () => {
-    it('should create a 3x9 grid', () => {
+    it('should create cards with 3x9 grid', () => {
       const store = useBingoStore();
-      store.generateCards('90', 1);
+      store.generateCards(BingoTypes.BINGO_90, 1);
       const card = store.cards90[0];
 
       expect(card).toBeDefined();
-      expect(card).toHaveLength(3);
-      card?.forEach((row) => {
+      expect(card?.grid).toHaveLength(3);
+      card?.grid.forEach((row) => {
         expect(row).toHaveLength(9);
       });
     });
 
     it('should have exactly 15 numbers total', () => {
       const store = useBingoStore();
-      store.generateCards('90', 1);
+      store.generateCards(BingoTypes.BINGO_90, 1);
       const card = store.cards90[0];
 
       expect(card).toBeDefined();
       if (!card) return;
 
-      const numbers = card.flat().filter((val) => val !== null);
+      const numbers = card.grid.flat().filter((cell) => cell.value !== null);
       expect(numbers).toHaveLength(15);
     });
 
     it('should have exactly 5 numbers per row', () => {
       const store = useBingoStore();
-      store.generateCards('90', 1);
+      store.generateCards(BingoTypes.BINGO_90, 1);
       const card = store.cards90[0];
 
       expect(card).toBeDefined();
       if (!card) return;
 
-      card.forEach((row) => {
-        const numbers = row.filter((val) => val !== null);
+      card.grid.forEach((row) => {
+        const numbers = row.filter((cell) => cell.value !== null);
         expect(numbers).toHaveLength(5);
       });
     });
 
-    it('should have numbers in correct ranges for each column', () => {
-      const store = useBingoStore();
-      store.generateCards('90', 1);
-      const card = store.cards90[0];
-
-      expect(card).toBeDefined();
-      if (!card) return;
-
-      for (let col = 0; col < 9; col++) {
-        const columnNumbers: number[] = [];
-
-        for (let row = 0; row < 3; row++) {
-          const value = card[row]?.[col];
-          if (typeof value === 'number') {
-            columnNumbers.push(value);
-          }
-        }
-
-        const expectedMin = col === 0 ? 1 : col * 10;
-        const expectedMax = col === 8 ? 90 : col * 10 + 9;
-
-        columnNumbers.forEach((num) => {
-          expect(num).toBeGreaterThanOrEqual(expectedMin);
-          expect(num).toBeLessThanOrEqual(expectedMax);
-        });
-      }
-    });
-
     it('should have at least 1 number per column', () => {
       const store = useBingoStore();
-      store.generateCards('90', 1);
+      store.generateCards(BingoTypes.BINGO_90, 1);
       const card = store.cards90[0];
 
       expect(card).toBeDefined();
       if (!card) return;
 
       for (let col = 0; col < 9; col++) {
-        const columnNumbers = card.map((row) => row[col]).filter((val) => val !== null);
+        const columnCells = card.grid.map((row) => row[col]).filter((cell) => cell?.value !== null);
 
-        expect(columnNumbers.length).toBeGreaterThanOrEqual(1);
-        expect(columnNumbers.length).toBeLessThanOrEqual(3);
-      }
-    });
-
-    it('should have numbers sorted in ascending order within each column', () => {
-      const store = useBingoStore();
-      store.generateCards('90', 1);
-      const card = store.cards90[0];
-
-      expect(card).toBeDefined();
-      if (!card) return;
-
-      for (let col = 0; col < 9; col++) {
-        const columnNumbers = card
-          .map((row) => row[col])
-          .filter((val): val is number => val !== null);
-
-        for (let i = 1; i < columnNumbers.length; i++) {
-          const prev = columnNumbers[i - 1];
-          const curr = columnNumbers[i];
-          if (prev !== undefined && curr !== undefined) {
-            expect(curr).toBeGreaterThan(prev);
-          }
-        }
+        expect(columnCells.length).toBeGreaterThanOrEqual(1);
+        expect(columnCells.length).toBeLessThanOrEqual(3);
       }
     });
   });

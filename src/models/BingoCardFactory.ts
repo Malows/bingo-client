@@ -55,10 +55,10 @@ export class BingoCardFactory {
    */
   static fromJSON(json: BingoCardJSON): BingoCard {
     switch (json.type) {
-      case '75':
+      case BingoTypes.BINGO_75:
         return Bingo75Card.fromJSON(json);
 
-      case '90':
+      case BingoTypes.BINGO_90:
         return Bingo90Card.fromJSON(json);
 
       default: {

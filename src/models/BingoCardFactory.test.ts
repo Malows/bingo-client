@@ -129,7 +129,7 @@ describe('BingoCardFactory', () => {
     it('should throw error for invalid type in JSON', () => {
       const invalidJson = {
         id: 'test',
-        type: 'invalid' as unknown as '75',
+        type: 'invalid' as BingoTypes,
         grid: [],
       };
 

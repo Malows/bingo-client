@@ -3,7 +3,7 @@ import { BingoTypes, BINGO_90_CONSTANTS } from './BingoCard';
 
 export class Bingo90Card implements BingoCard {
   readonly id: string;
-  readonly type: '90' = BingoTypes.BINGO_90;
+  readonly type: BingoTypes = BingoTypes.BINGO_90;
   readonly grid: BingoCell[][];
 
   constructor(id?: string, grid?: BingoCell[][]) {
@@ -65,7 +65,7 @@ export class Bingo90Card implements BingoCard {
   }
 
   static fromJSON(json: BingoCardJSON): Bingo90Card {
-    if (json.type !== '90') {
+    if (json.type !== BingoTypes.BINGO_90) {
       throw new Error('Invalid card type for Bingo90Card');
     }
     return new Bingo90Card(json.id, json.grid);
