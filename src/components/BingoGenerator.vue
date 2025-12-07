@@ -30,12 +30,19 @@ const stickyPosition = computed(() => {
   <div class="bingo-generator">
     <!-- FAB button to open config dialog on mobile -->
     <q-page-sticky :position="stickyPosition" :offset="[18, 18]">
-      <q-btn round color="primary" icon="settings" @click="showConfigDialog = true" />
+      <q-btn
+        class="print-hide"
+        round
+        color="primary"
+        icon="settings"
+        @click="showConfigDialog = true"
+      />
     </q-page-sticky>
 
     <!-- Configuration Dialog -->
     <game-modal
       v-model="showConfigDialog"
+      class="print-hide"
       :total-cards="store.totalCards"
       @generate="generate"
       @print="printCards"
@@ -47,7 +54,7 @@ const stickyPosition = computed(() => {
           v-for="card in store.cards75"
           :key="card.id"
           :card="card"
-          class="q-mb-md"
+          class="q-mb-sm"
           @toggle-mark="(row, col) => store.toggleMark(card.id, row, col)"
         />
       </div>
@@ -64,28 +71,33 @@ const stickyPosition = computed(() => {
 </template>
 
 <style scoped>
-.control-panel {
-  max-width: 800px;
+/* Cards display - flexbox layout */
+.print-grid-75,
+.print-grid-90 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.print-grid-75 > *,
+.print-grid-90 > * {
+  flex: 1 1 100%;
+  min-width: 0;
+}
+
+.print-grid-75 > * {
+  max-width: 300px;
+}
+
+.print-grid-90 > * {
+  max-width: 600px;
+}
+
+.cards-display {
+  max-width: 1400px;
   margin: 0 auto;
 }
-
-/* FAB container with fixed position - responsive */
-.fab-container {
-  position: fixed;
-  right: 18px;
-  z-index: 1000;
-  /* Mobile: bottom right */
-  bottom: 18px;
-}
-
-/* Desktop: top right */
-@media (min-width: 1024px) {
-  .fab-container {
-    bottom: auto;
-    top: 74px; /* Below header */
-  }
-}
-
 /* Print Styles */
 @media print {
   .no-print {
@@ -95,18 +107,6 @@ const stickyPosition = computed(() => {
   .q-page-container {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
-  }
-
-  .print-grid-75 {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 cards per row for Bingo 75 */
-    gap: 20px;
-    justify-items: center;
-  }
-
-  .print-grid-90 {
-    /* Bingo 90 often printed in strips of 6, or just stacked */
-    display: block;
   }
 }
 </style>

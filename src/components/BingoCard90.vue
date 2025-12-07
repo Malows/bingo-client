@@ -32,7 +32,6 @@ defineEmits<{ (e: 'toggle-mark', row: number, col: number): void }>();
   width: 100%;
   max-width: 600px;
   background: white;
-  margin-bottom: 20px;
   page-break-inside: avoid;
 }
 
