@@ -5,14 +5,17 @@ import { Quasar } from 'quasar';
 import BingoGenerator from './BingoGenerator.vue';
 import BingoCard75 from './BingoCard75.vue';
 import BingoCard90 from './BingoCard90.vue';
+import { BingoTypes } from '../models/BingoCard';
+import type { Bingo75Card } from '../models/Bingo75Card';
+import type { Bingo90Card } from '../models/Bingo90Card';
 
 // Type helper para el componente BingoGenerator
 interface BingoGeneratorVM {
-  gameType: '75' | '90';
+  gameType: BingoTypes;
   quantity: number;
   generate: () => void;
   printCards: () => void;
-  store: { cards75: unknown[]; cards90: unknown[] };
+  store: { cards75: Bingo75Card[]; cards90: Bingo90Card[] };
 }
 
 describe('BingoGenerator.vue', () => {
@@ -59,7 +62,7 @@ describe('BingoGenerator.vue', () => {
     const wrapper = mountComponent();
     const vm = wrapper.vm as unknown as BingoGeneratorVM;
 
-    expect(vm.gameType).toBe('75');
+    expect(vm.gameType).toBe(BingoTypes.BINGO_75);
     expect(vm.quantity).toBe(6);
   });
 
@@ -88,7 +91,7 @@ describe('BingoGenerator.vue', () => {
     const wrapper = mountComponent();
     const vm = wrapper.vm as unknown as BingoGeneratorVM;
 
-    vm.gameType = '75';
+    vm.gameType = BingoTypes.BINGO_75;
     vm.quantity = 2;
     vm.generate();
 
@@ -102,7 +105,7 @@ describe('BingoGenerator.vue', () => {
     const wrapper = mountComponent();
     const vm = wrapper.vm as unknown as BingoGeneratorVM;
 
-    vm.gameType = '90';
+    vm.gameType = BingoTypes.BINGO_90;
     vm.quantity = 2;
     vm.generate();
 
@@ -129,7 +132,7 @@ describe('BingoGenerator.vue', () => {
     const printSpy = window.print as ReturnType<typeof vi.fn>;
 
     // Generate some cards first
-    vm.gameType = '75';
+    vm.gameType = BingoTypes.BINGO_75;
     vm.quantity = 2;
     vm.generate();
 
@@ -146,13 +149,13 @@ describe('BingoGenerator.vue', () => {
     const vm = wrapper.vm as unknown as BingoGeneratorVM;
 
     // Generate type 75
-    vm.gameType = '75';
+    vm.gameType = BingoTypes.BINGO_75;
     vm.quantity = 2;
     vm.generate();
     await wrapper.vm.$nextTick();
 
     // Switch to type 90
-    vm.gameType = '90';
+    vm.gameType = BingoTypes.BINGO_90;
     vm.quantity = 2;
     vm.generate();
     await wrapper.vm.$nextTick();
@@ -164,13 +167,18 @@ describe('BingoGenerator.vue', () => {
     expect(cards90.length).toBeGreaterThan(0);
   });
 
-  it('should have print grid classes', () => {
+  it('should have print grid classes after generating cards', async () => {
     const wrapper = mountComponent();
+    const vm = wrapper.vm as unknown as BingoGeneratorVM;
+
+    // Generate cards
+    vm.generate();
+    await wrapper.vm.$nextTick();
 
     const printGrid75 = wrapper.find('.print-grid-75');
     const printGrid90 = wrapper.find('.print-grid-90');
 
-    // At least one should exist based on initial state
+    // At least one should exist after generating
     expect(printGrid75.exists() || printGrid90.exists()).toBe(true);
   });
 

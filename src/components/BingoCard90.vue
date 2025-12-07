@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import type { Bingo90Card } from 'src/stores/bingo';
+import type { Bingo90Card } from 'src/models';
+
+import BingoCell from './BingoCell.vue';
 
 defineProps<{ card: Bingo90Card }>();
 defineEmits<{ (e: 'toggle-mark', row: number, col: number): void }>();
@@ -8,16 +10,17 @@ defineEmits<{ (e: 'toggle-mark', row: number, col: number): void }>();
 <template>
   <div class="bingo-card-90">
     <div class="bingo-grid-90">
-      <div v-for="(row, rIndex) in card" :key="rIndex" class="bingo-row-90">
-        <div
+      <div v-for="(row, rIndex) in card.grid" :key="rIndex" class="bingo-row-90">
+        <bingo-cell
           v-for="(cell, cIndex) in row"
-          :key="cIndex"
-          class="bingo-cell-90 cursor-pointer"
-          @click="$emit('toggle-mark', rIndex, cIndex)"
-        >
-          <span v-if="cell !== null">{{ cell }}</span>
-          <span v-else class="empty-cell"></span>
-        </div>
+          :key="cell.id"
+          :row="rIndex"
+          :col="cIndex"
+          :value="cell.value"
+          :marked="cell.marked"
+          :type="card.type"
+          @toggle-mark="$emit('toggle-mark', rIndex, cIndex)"
+        />
       </div>
     </div>
   </div>
@@ -42,28 +45,5 @@ defineEmits<{ (e: 'toggle-mark', row: number, col: number): void }>();
   display: grid;
   grid-template-columns: repeat(9, 1fr);
   height: 60px;
-}
-
-.bingo-cell-90 {
-  border: 1px solid #333;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
-.empty-cell {
-  width: 100%;
-  height: 100%;
-  background-color: #ffebee;
-}
-
-/* Printing optimization */
-@media print {
-  .bingo-card-90 {
-    break-inside: avoid;
-    margin-bottom: 10px;
-  }
 }
 </style>

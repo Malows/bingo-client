@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { BingoTypes } from 'src/models/BingoCard';
+import { BingoTypes } from 'src/models';
 import { useBingoStore } from 'src/stores/bingo';
 import BingoCard75 from './BingoCard75.vue';
 import BingoCard90 from './BingoCard90.vue';
 
 const store = useBingoStore();
 const gameType = ref<BingoTypes>(BingoTypes.BINGO_75);
-const quantity = ref(6);
+const quantity = ref(1);
 
-const totalCards = computed(() => {
-  return store.gameType === '75' ? store.cards75.length : store.cards90.length;
-});
+const totalCards = computed(() =>
+  store.gameType === BingoTypes.BINGO_75 ? store.cards75.length : store.cards90.length,
+);
 
 function generate() {
   store.generateCards(gameType.value, quantity.value);
@@ -81,16 +81,22 @@ function printCards() {
     </div>
 
     <div class="cards-display q-pa-md">
-      <div v-if="store.gameType === '75'" class="print-grid-75">
+      <div v-if="store.gameType === BingoTypes.BINGO_75" class="print-grid-75">
         <BingoCard75
-          v-for="(card, index) in store.cards75"
-          :key="index"
+          v-for="card in store.cards75"
+          :key="card.id"
           :card="card"
           class="q-mb-md"
+          @toggle-mark="(row, col) => store.toggleMark(card.id, row, col)"
         />
       </div>
-      <div v-if="store.gameType === '90'" class="print-grid-90">
-        <BingoCard90 v-for="(card, index) in store.cards90" :key="index" :card="card" />
+      <div v-if="store.gameType === BingoTypes.BINGO_90" class="print-grid-90">
+        <BingoCard90
+          v-for="card in store.cards90"
+          :key="card.id"
+          :card="card"
+          @toggle-mark="(row, col) => store.toggleMark(card.id, row, col)"
+        />
       </div>
     </div>
   </div>

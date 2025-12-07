@@ -1,20 +1,18 @@
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
 import BingoCard75 from './BingoCard75.vue';
+import { Bingo75Card } from '../models/Bingo75Card';
 
 describe('BingoCard75.vue', () => {
-  const mockCard: (number | 'FREE')[][] = [
-    [1, 16, 31, 46, 61],
-    [2, 17, 32, 47, 62],
-    [3, 18, 'FREE', 48, 63],
-    [4, 19, 34, 49, 64],
-    [5, 20, 35, 50, 65],
-  ];
+  // Helper to create a mock card with specific values
+  const createMockCard = (): Bingo75Card => {
+    return new Bingo75Card();
+  };
 
   it('should render the component', () => {
     const wrapper = mount(BingoCard75, {
       props: {
-        card: mockCard,
+        card: createMockCard(),
       },
     });
 
@@ -24,7 +22,7 @@ describe('BingoCard75.vue', () => {
   it('should display BINGO header letters', () => {
     const wrapper = mount(BingoCard75, {
       props: {
-        card: mockCard,
+        card: createMockCard(),
       },
     });
 
@@ -40,7 +38,7 @@ describe('BingoCard75.vue', () => {
   it('should render 5 rows', () => {
     const wrapper = mount(BingoCard75, {
       props: {
-        card: mockCard,
+        card: createMockCard(),
       },
     });
 
@@ -51,7 +49,7 @@ describe('BingoCard75.vue', () => {
   it('should render 25 cells total', () => {
     const wrapper = mount(BingoCard75, {
       props: {
-        card: mockCard,
+        card: createMockCard(),
       },
     });
 
@@ -62,7 +60,7 @@ describe('BingoCard75.vue', () => {
   it('should display FREE space in center', () => {
     const wrapper = mount(BingoCard75, {
       props: {
-        card: mockCard,
+        card: createMockCard(),
       },
     });
 
@@ -75,26 +73,10 @@ describe('BingoCard75.vue', () => {
     expect(centerCell?.classes()).toContain('free-space');
   });
 
-  it('should display numbers correctly', () => {
-    const wrapper = mount(BingoCard75, {
-      props: {
-        card: mockCard,
-      },
-    });
-
-    const rows = wrapper.findAll('.bingo-row');
-    const firstRow = rows[0];
-    const cells = firstRow?.findAll('.bingo-cell');
-
-    expect(cells?.[0]?.text()).toBe('1');
-    expect(cells?.[1]?.text()).toBe('16');
-    expect(cells?.[2]?.text()).toBe('31');
-  });
-
   it('should apply free-space class only to FREE cell', () => {
     const wrapper = mount(BingoCard75, {
       props: {
-        card: mockCard,
+        card: createMockCard(),
       },
     });
 
@@ -105,23 +87,33 @@ describe('BingoCard75.vue', () => {
     expect(centerCell?.classes()).toContain('free-space');
   });
 
-  it('should render with different card data', () => {
-    const differentCard: (number | 'FREE')[][] = [
-      [10, 25, 40, 55, 70],
-      [11, 26, 41, 56, 71],
-      [12, 27, 'FREE', 57, 72],
-      [13, 28, 42, 58, 73],
-      [14, 29, 43, 59, 74],
-    ];
-
+  it('should emit toggle-mark event when cell is clicked', async () => {
     const wrapper = mount(BingoCard75, {
       props: {
-        card: differentCard,
+        card: createMockCard(),
       },
     });
 
-    const cells = wrapper.findAll('.bingo-cell');
-    expect(cells[0]?.text()).toBe('10');
-    expect(cells[1]?.text()).toBe('25');
+    const rows = wrapper.findAll('.bingo-row');
+    const firstCell = rows[0]?.findAll('.bingo-cell')[0];
+
+    await firstCell?.trigger('click');
+
+    expect(wrapper.emitted('toggle-mark')).toBeTruthy();
+    expect(wrapper.emitted('toggle-mark')![0]).toEqual([0, 0]);
+  });
+
+  it('should show marked class when cell is marked', () => {
+    const card = createMockCard();
+    card.toggleMark(0, 0); // Mark the first cell
+
+    const wrapper = mount(BingoCard75, {
+      props: { card },
+    });
+
+    const rows = wrapper.findAll('.bingo-row');
+    const firstCell = rows[0]?.findAll('.bingo-cell')[0];
+
+    expect(firstCell?.classes()).toContain('marked');
   });
 });

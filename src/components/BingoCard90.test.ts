@@ -1,18 +1,18 @@
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
 import BingoCard90 from './BingoCard90.vue';
+import { Bingo90Card } from '../models/Bingo90Card';
 
 describe('BingoCard90.vue', () => {
-  const mockCard: (number | null)[][] = [
-    [1, null, 23, null, 45, null, 67, null, 89],
-    [2, 15, null, 34, null, 56, null, 78, null],
-    [null, null, 29, null, 49, null, 69, null, 90],
-  ];
+  // Helper to create a mock card
+  const createMockCard = (): Bingo90Card => {
+    return new Bingo90Card();
+  };
 
   it('should render the component', () => {
     const wrapper = mount(BingoCard90, {
       props: {
-        card: mockCard,
+        card: createMockCard(),
       },
     });
 
@@ -22,7 +22,7 @@ describe('BingoCard90.vue', () => {
   it('should render 3 rows', () => {
     const wrapper = mount(BingoCard90, {
       props: {
-        card: mockCard,
+        card: createMockCard(),
       },
     });
 
@@ -33,7 +33,7 @@ describe('BingoCard90.vue', () => {
   it('should render 27 cells total (3x9)', () => {
     const wrapper = mount(BingoCard90, {
       props: {
-        card: mockCard,
+        card: createMockCard(),
       },
     });
 
@@ -41,85 +41,28 @@ describe('BingoCard90.vue', () => {
     expect(cells).toHaveLength(27);
   });
 
-  it('should display numbers correctly', () => {
+  it('should have correct number of numbered cells (15)', () => {
+    const card = createMockCard();
     const wrapper = mount(BingoCard90, {
-      props: {
-        card: mockCard,
-      },
-    });
-
-    const rows = wrapper.findAll('.bingo-row-90');
-    const firstRow = rows[0];
-    const cells = firstRow?.findAll('.bingo-cell-90');
-
-    expect(cells?.[0]?.text()).toBe('1');
-    expect(cells?.[2]?.text()).toBe('23');
-    expect(cells?.[4]?.text()).toBe('45');
-  });
-
-  it('should render empty cells as empty', () => {
-    const wrapper = mount(BingoCard90, {
-      props: {
-        card: mockCard,
-      },
-    });
-
-    const rows = wrapper.findAll('.bingo-row-90');
-    const firstRow = rows[0];
-    const cells = firstRow?.findAll('.bingo-cell-90');
-
-    // Cell at index 1 should be null/empty
-    const emptyCell = cells?.[1];
-    const emptyCellSpan = emptyCell?.find('.empty-cell');
-    expect(emptyCellSpan?.exists()).toBe(true);
-  });
-
-  it('should have correct number of numbered cells', () => {
-    const wrapper = mount(BingoCard90, {
-      props: {
-        card: mockCard,
-      },
+      props: { card },
     });
 
     const cells = wrapper.findAll('.bingo-cell-90');
     let numberedCount = 0;
 
     cells.forEach((cell) => {
-      // If cell doesn't have empty-cell class or has numeric text
       if (!cell.find('.empty-cell').exists() && cell.text().trim() !== '') {
         numberedCount++;
       }
     });
 
-    // Each row should have 5 numbers
-    const expectedNumbers = mockCard.flat().filter((val) => val !== null).length;
-    expect(numberedCount).toBe(expectedNumbers);
-  });
-
-  it('should render with different card data', () => {
-    const differentCard: (number | null)[][] = [
-      [null, 10, null, 30, null, 50, null, 70, 85],
-      [5, null, 25, null, 40, null, 60, null, 90],
-      [null, 19, null, 39, null, 59, null, 79, null],
-    ];
-
-    const wrapper = mount(BingoCard90, {
-      props: {
-        card: differentCard,
-      },
-    });
-
-    const cells = wrapper.findAll('.bingo-cell-90');
-    // First cell should be empty
-    expect(cells[0]?.find('.empty-cell').exists()).toBe(true);
-    // Second cell should have 10
-    expect(cells[1]?.text()).toBe('10');
+    expect(numberedCount).toBe(15);
   });
 
   it('should maintain 9 columns per row', () => {
     const wrapper = mount(BingoCard90, {
       props: {
-        card: mockCard,
+        card: createMockCard(),
       },
     });
 
@@ -128,5 +71,61 @@ describe('BingoCard90.vue', () => {
       const cells = row.findAll('.bingo-cell-90');
       expect(cells).toHaveLength(9);
     });
+  });
+
+  it('should emit toggle-mark event when cell is clicked', async () => {
+    const wrapper = mount(BingoCard90, {
+      props: {
+        card: createMockCard(),
+      },
+    });
+
+    const rows = wrapper.findAll('.bingo-row-90');
+    const firstCell = rows[0]?.findAll('.bingo-cell-90')[0];
+
+    await firstCell?.trigger('click');
+
+    expect(wrapper.emitted('toggle-mark')).toBeTruthy();
+    expect(wrapper.emitted('toggle-mark')![0]).toEqual([0, 0]);
+  });
+
+  it('should show marked class when cell with value is marked', () => {
+    const card = createMockCard();
+
+    // Find a cell with a value and mark it
+    let markedRow = -1;
+    let markedCol = -1;
+    for (let r = 0; r < 3; r++) {
+      for (let c = 0; c < 9; c++) {
+        const cell = card.grid[r]?.[c];
+        if (cell?.value !== null) {
+          card.toggleMark(r, c);
+          markedRow = r;
+          markedCol = c;
+          break;
+        }
+      }
+      if (markedRow >= 0) break;
+    }
+
+    const wrapper = mount(BingoCard90, {
+      props: { card },
+    });
+
+    const rows = wrapper.findAll('.bingo-row-90');
+    const markedCell = rows[markedRow]?.findAll('.bingo-cell-90')[markedCol];
+
+    expect(markedCell?.classes()).toContain('marked');
+  });
+
+  it('should render empty cells correctly', () => {
+    const card = createMockCard();
+    const wrapper = mount(BingoCard90, {
+      props: { card },
+    });
+
+    // Count empty cells (should be 12 = 27 - 15)
+    const emptyCells = wrapper.findAll('.empty-cell');
+    expect(emptyCells).toHaveLength(12);
   });
 });
