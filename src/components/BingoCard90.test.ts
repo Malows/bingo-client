@@ -37,7 +37,7 @@ describe('BingoCard90.vue', () => {
       },
     });
 
-    const cells = wrapper.findAll('.bingo-cell-90');
+    const cells = wrapper.findAll('.bingo-cell');
     expect(cells).toHaveLength(27);
   });
 
@@ -47,11 +47,11 @@ describe('BingoCard90.vue', () => {
       props: { card },
     });
 
-    const cells = wrapper.findAll('.bingo-cell-90');
+    const cells = wrapper.findAll('.bingo-cell');
     let numberedCount = 0;
 
     cells.forEach((cell) => {
-      if (!cell.find('.empty-cell').exists() && cell.text().trim() !== '') {
+      if (!cell.classes().includes('bingo-cell--empty') && cell.text().trim() !== '') {
         numberedCount++;
       }
     });
@@ -68,7 +68,7 @@ describe('BingoCard90.vue', () => {
 
     const rows = wrapper.findAll('.bingo-row-90');
     rows.forEach((row) => {
-      const cells = row.findAll('.bingo-cell-90');
+      const cells = row.findAll('.bingo-cell');
       expect(cells).toHaveLength(9);
     });
   });
@@ -81,7 +81,7 @@ describe('BingoCard90.vue', () => {
     });
 
     const rows = wrapper.findAll('.bingo-row-90');
-    const firstCell = rows[0]?.findAll('.bingo-cell-90')[0];
+    const firstCell = rows[0]?.findAll('.bingo-cell')[0];
 
     await firstCell?.trigger('click');
 
@@ -89,7 +89,7 @@ describe('BingoCard90.vue', () => {
     expect(wrapper.emitted('toggle-mark')![0]).toEqual([0, 0]);
   });
 
-  it('should show marked class when cell with value is marked', () => {
+  it('should show bingo-cell--marked class when cell with value is marked', () => {
     const card = createMockCard();
 
     // Find a cell with a value and mark it
@@ -113,9 +113,9 @@ describe('BingoCard90.vue', () => {
     });
 
     const rows = wrapper.findAll('.bingo-row-90');
-    const markedCell = rows[markedRow]?.findAll('.bingo-cell-90')[markedCol];
+    const markedCell = rows[markedRow]?.findAll('.bingo-cell')[markedCol];
 
-    expect(markedCell?.classes()).toContain('marked');
+    expect(markedCell?.classes()).toContain('bingo-cell--marked');
   });
 
   it('should render empty cells correctly', () => {
@@ -125,7 +125,7 @@ describe('BingoCard90.vue', () => {
     });
 
     // Count empty cells (should be 12 = 27 - 15)
-    const emptyCells = wrapper.findAll('.empty-cell');
+    const emptyCells = wrapper.findAll('.bingo-cell--empty');
     expect(emptyCells).toHaveLength(12);
   });
 });

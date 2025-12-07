@@ -63,7 +63,7 @@ describe('BingoGenerator.vue', () => {
     const vm = wrapper.vm as unknown as BingoGeneratorVM;
 
     expect(vm.gameType).toBe(BingoTypes.BINGO_75);
-    expect(vm.quantity).toBe(6);
+    expect(vm.quantity).toBe(1);
   });
 
   it('should call generate when button is clicked', async () => {

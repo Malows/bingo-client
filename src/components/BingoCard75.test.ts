@@ -70,21 +70,21 @@ describe('BingoCard75.vue', () => {
     const centerCell = cells?.[2];
 
     expect(centerCell?.text()).toBe('FREE');
-    expect(centerCell?.classes()).toContain('free-space');
+    expect(centerCell?.classes()).toContain('bingo-cell--free');
   });
 
-  it('should apply free-space class only to FREE cell', () => {
+  it('should apply bingo-cell--free class only to FREE cell', () => {
     const wrapper = mount(BingoCard75, {
       props: {
         card: createMockCard(),
       },
     });
 
-    const freeSpaceCells = wrapper.findAll('.free-space');
+    const freeSpaceCells = wrapper.findAll('.bingo-cell--free');
     expect(freeSpaceCells).toHaveLength(1);
 
     const centerCell = wrapper.findAll('.bingo-row')[2]?.findAll('.bingo-cell')[2];
-    expect(centerCell?.classes()).toContain('free-space');
+    expect(centerCell?.classes()).toContain('bingo-cell--free');
   });
 
   it('should emit toggle-mark event when cell is clicked', async () => {
@@ -103,7 +103,7 @@ describe('BingoCard75.vue', () => {
     expect(wrapper.emitted('toggle-mark')![0]).toEqual([0, 0]);
   });
 
-  it('should show marked class when cell is marked', () => {
+  it('should show bingo-cell--marked class when cell is marked', () => {
     const card = createMockCard();
     card.toggleMark(0, 0); // Mark the first cell
 
@@ -114,6 +114,6 @@ describe('BingoCard75.vue', () => {
     const rows = wrapper.findAll('.bingo-row');
     const firstCell = rows[0]?.findAll('.bingo-cell')[0];
 
-    expect(firstCell?.classes()).toContain('marked');
+    expect(firstCell?.classes()).toContain('bingo-cell--marked');
   });
 });
