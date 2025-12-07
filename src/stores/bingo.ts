@@ -46,6 +46,10 @@ export const useBingoStore = defineStore('bingo', () => {
     return card.checkFull();
   }
 
+  const totalCards = computed(() =>
+    gameType.value === BingoTypes.BINGO_75 ? cards75.value.length : cards90.value.length,
+  );
+
   return {
     // State
     cards,
@@ -53,6 +57,7 @@ export const useBingoStore = defineStore('bingo', () => {
     // Getters
     cards75,
     cards90,
+    totalCards,
     // Actions
     generateCards,
     clearCards,

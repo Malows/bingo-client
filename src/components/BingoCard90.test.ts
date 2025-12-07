@@ -74,19 +74,33 @@ describe('BingoCard90.vue', () => {
   });
 
   it('should emit toggle-mark event when cell is clicked', async () => {
+    const card = createMockCard();
+
+    // Find a cell with a value (non-empty)
+    let targetRow = -1;
+    let targetCol = -1;
+    for (let r = 0; r < 3 && targetRow === -1; r++) {
+      for (let c = 0; c < 9; c++) {
+        const cell = card.grid[r]?.[c];
+        if (cell?.value !== null) {
+          targetRow = r;
+          targetCol = c;
+          break;
+        }
+      }
+    }
+
     const wrapper = mount(BingoCard90, {
-      props: {
-        card: createMockCard(),
-      },
+      props: { card },
     });
 
     const rows = wrapper.findAll('.bingo-row-90');
-    const firstCell = rows[0]?.findAll('.bingo-cell')[0];
+    const cellToClick = rows[targetRow]?.findAll('.bingo-cell')[targetCol];
 
-    await firstCell?.trigger('click');
+    await cellToClick?.trigger('click');
 
     expect(wrapper.emitted('toggle-mark')).toBeTruthy();
-    expect(wrapper.emitted('toggle-mark')![0]).toEqual([0, 0]);
+    expect(wrapper.emitted('toggle-mark')![0]).toEqual([targetRow, targetCol]);
   });
 
   it('should show bingo-cell--marked class when cell with value is marked', () => {

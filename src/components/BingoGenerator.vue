@@ -1,86 +1,47 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { computed, ref } from 'vue';
+import { useQuasar } from 'quasar';
 import { BingoTypes } from 'src/models';
 import { useBingoStore } from 'src/stores/bingo';
+
+import GameModal from './GameModal.vue';
 import BingoCard75 from './BingoCard75.vue';
 import BingoCard90 from './BingoCard90.vue';
 
+const $q = useQuasar();
 const store = useBingoStore();
-const gameType = ref<BingoTypes>(BingoTypes.BINGO_75);
-const quantity = ref(1);
+const showConfigDialog = ref(false);
 
-const totalCards = computed(() =>
-  store.gameType === BingoTypes.BINGO_75 ? store.cards75.length : store.cards90.length,
-);
-
-function generate() {
-  store.generateCards(gameType.value, quantity.value);
+function generate(gameType: BingoTypes, quantity: number = 1) {
+  store.generateCards(gameType, quantity);
+  showConfigDialog.value = false;
 }
 
 function printCards() {
   window.print();
 }
+
+const stickyPosition = computed(() => {
+  return $q.screen.gt.sm ? 'top-right' : 'bottom-right';
+});
 </script>
 
 <template>
   <div class="bingo-generator">
-    <div class="controls q-pa-md q-gutter-md no-print">
-      <q-card class="control-panel">
-        <q-card-section>
-          <div class="text-h6">Configuration</div>
-        </q-card-section>
+    <!-- FAB button to open config dialog on mobile -->
+    <q-page-sticky :position="stickyPosition" :offset="[18, 18]">
+      <q-btn round color="primary" icon="settings" @click="showConfigDialog = true" />
+    </q-page-sticky>
 
-        <q-card-section>
-          <div class="row q-col-gutter-md">
-            <div class="col-12 col-md-4">
-              <q-select
-                v-model="gameType"
-                :options="[
-                  { label: 'Bingo 75 (US)', value: '75' },
-                  { label: 'Bingo 90 (UK/ES)', value: '90' },
-                ]"
-                label="Game Type"
-                outlined
-                emit-value
-                map-options
-              />
-            </div>
-            <div class="col-12 col-md-4">
-              <q-input
-                v-model.number="quantity"
-                type="number"
-                label="Quantity"
-                outlined
-                min="1"
-                max="100"
-              />
-            </div>
-            <div class="col-12 col-md-4 flex items-center">
-              <q-btn
-                color="primary"
-                label="Generate Cards"
-                @click="generate"
-                class="full-width"
-                icon="refresh"
-              />
-            </div>
-          </div>
-        </q-card-section>
+    <!-- Configuration Dialog -->
+    <game-modal
+      v-model="showConfigDialog"
+      :total-cards="store.totalCards"
+      @generate="generate"
+      @print="printCards"
+    />
 
-        <q-card-actions align="right">
-          <q-btn
-            flat
-            color="secondary"
-            label="Print Cards"
-            @click="printCards"
-            icon="print"
-            :disable="totalCards === 0"
-          />
-        </q-card-actions>
-      </q-card>
-    </div>
-
-    <div class="cards-display q-pa-md">
+    <div class="cards-display q-pa-sm">
       <div v-if="store.gameType === BingoTypes.BINGO_75" class="print-grid-75">
         <BingoCard75
           v-for="card in store.cards75"
@@ -106,6 +67,23 @@ function printCards() {
 .control-panel {
   max-width: 800px;
   margin: 0 auto;
+}
+
+/* FAB container with fixed position - responsive */
+.fab-container {
+  position: fixed;
+  right: 18px;
+  z-index: 1000;
+  /* Mobile: bottom right */
+  bottom: 18px;
+}
+
+/* Desktop: top right */
+@media (min-width: 1024px) {
+  .fab-container {
+    bottom: auto;
+    top: 74px; /* Below header */
+  }
 }
 
 /* Print Styles */
