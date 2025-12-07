@@ -37,6 +37,9 @@ export default defineConfig((/* ctx */) => {
         node: 'node20',
       },
 
+      // GitHub Pages deployment - use repo name as base path
+      publicPath: process.env.GITHUB_ACTIONS ? '/bingo-client/' : '/',
+
       typescript: {
         strict: true,
         vueShim: true,
