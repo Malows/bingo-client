@@ -72,7 +72,19 @@ const stickyPosition = computed(() => {
 
 <style scoped>
 /* Cards display - flexbox layout */
-.print-grid-75,
+.print-grid-75 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.print-grid-75 > * {
+  flex: 1 1 300px; /* grow, shrink, basis = max-width of BingoCard75 */
+  max-width: 300px;
+  min-width: 0;
+}
+
 .print-grid-90 {
   display: flex;
   flex-wrap: wrap;
@@ -80,24 +92,12 @@ const stickyPosition = computed(() => {
   justify-content: center;
 }
 
-.print-grid-75 > *,
 .print-grid-90 > * {
-  flex: 1 1 100%;
+  flex: 1 1 100%; /* En pantallas pequeñas, ocupar todo el ancho */
+  max-width: 600px;
   min-width: 0;
 }
 
-.print-grid-75 > * {
-  max-width: 300px;
-}
-
-.print-grid-90 > * {
-  max-width: 600px;
-}
-
-.cards-display {
-  max-width: 1400px;
-  margin: 0 auto;
-}
 /* Print Styles */
 @media print {
   .no-print {
