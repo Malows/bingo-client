@@ -1,14 +1,23 @@
 <script setup lang="ts">
 import type { Bingo90Card } from 'src/models';
+import { useSkinStore } from 'src/stores/skin';
 
 import BingoCell from './BingoCell.vue';
 
 defineProps<{ card: Bingo90Card }>();
 defineEmits<{ (e: 'toggle-mark', row: number, col: number): void }>();
+
+const skinStore = useSkinStore();
 </script>
 
 <template>
-  <div class="bingo-card-90">
+  <div
+    class="bingo-card-90"
+    :class="{
+      'bingo-card-90--argentina': skinStore.currentSkinId === 'argentina',
+      'bingo-card-90--colombia': skinStore.currentSkinId === 'colombia',
+    }"
+  >
     <div class="bingo-grid-90">
       <div v-for="(row, rIndex) in card.grid" :key="rIndex" class="bingo-row-90">
         <bingo-cell
@@ -33,6 +42,15 @@ defineEmits<{ (e: 'toggle-mark', row: number, col: number): void }>();
   max-width: 600px;
   background: white;
   page-break-inside: avoid;
+}
+
+.bingo-card-90--argentina {
+  border-color: #03a9f4; /* Blue border for Argentina skin */
+}
+
+.bingo-card-90--colombia {
+  border-color: #1e88e5; /* Blue border for Colombia skin */
+  background: #fff8e1; /* Light yellow background for Colombia skin */
 }
 
 .bingo-grid-90 {

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { BingoTypes } from 'src/models';
+import { useSkinStore } from 'src/stores/skin';
 
 const props = defineProps<{
   type: BingoTypes;
@@ -11,6 +12,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{ (e: 'toggle-mark', row: number, col: number): void }>();
+const skinStore = useSkinStore();
 
 const isEmpty = computed(() => props.value === null);
 const isFree = computed(() => props.value === 'FREE');
@@ -46,6 +48,8 @@ function handleKeydown(event: KeyboardEvent) {
     :class="{
       'bingo-cell--90': type === BingoTypes.BINGO_90,
       'bingo-cell--75': type === BingoTypes.BINGO_75,
+      'bingo-cell--argentina': skinStore.currentSkinId === 'argentina',
+      'bingo-cell--colombia': skinStore.currentSkinId === 'colombia',
       'bingo-cell--free': isFree,
       'bingo-cell--marked': marked,
       'bingo-cell--empty': isEmpty,
@@ -111,6 +115,14 @@ function handleKeydown(event: KeyboardEvent) {
   &__text {
     pointer-events: none;
   }
+}
+
+.bingo-cell--argentina.bingo-cell--empty {
+  background: #e1f5fe; /* Light blue background for Argentina skin */
+}
+
+.bingo-cell--colombia.bingo-cell--empty {
+  background: #b3e5fc;
 }
 
 @media print {

@@ -1,11 +1,18 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated class="bg-light-blue-6">
+    <q-header
+      elevated
+      :class="{
+        'header-shell': skinStore.currentSkinId === 'argentina',
+      }"
+    >
       <q-toolbar>
-        <q-toolbar-title>Bingo Locril Patrio</q-toolbar-title>
+        <q-toolbar-title>
+          {{ skinStore.title }}
+        </q-toolbar-title>
       </q-toolbar>
 
-      <div class="header-flag">
+      <div v-if="skinStore.currentSkinId === 'argentina'" class="header-flag">
         <img src="~/assets/sol-de-mayo.svg" alt="Sol de Mayo" class="sun-icon" />
       </div>
     </q-header>
@@ -16,9 +23,17 @@
   </q-layout>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useSkinStore } from 'src/stores/skin';
+
+const skinStore = useSkinStore();
+</script>
 
 <style scoped>
+.header-shell {
+  background: #03a9f4;
+}
+
 .header-flag {
   position: absolute;
   top: 0;
