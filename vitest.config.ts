@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 
 export default defineConfig({
   plugins: [
-    vue(),
+    vue() as never,
     quasar({
       sassVariables: 'src/css/quasar.variables.scss',
     }) as never,

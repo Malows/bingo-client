@@ -19,13 +19,11 @@ const isFree = computed(() => props.value === 'FREE');
 const isInteractive = computed(() => !isEmpty.value);
 
 function handleClick() {
-  // No hacer nada si está vacía, es FREE, o ya está marcada
   if (isEmpty.value || isFree.value || props.marked) return;
   emit('toggle-mark', props.row, props.col);
 }
 
 function handleDoubleClick() {
-  // Solo desmarcar si está marcada y no es FREE ni vacía
   if (isEmpty.value || isFree.value || !props.marked) return;
   emit('toggle-mark', props.row, props.col);
 }
@@ -48,12 +46,19 @@ function handleKeydown(event: KeyboardEvent) {
     :class="{
       'bingo-cell--90': type === BingoTypes.BINGO_90,
       'bingo-cell--75': type === BingoTypes.BINGO_75,
-      'bingo-cell--argentina': skinStore.currentSkinId === 'argentina',
-      'bingo-cell--colombia': skinStore.currentSkinId === 'colombia',
       'bingo-cell--free': isFree,
       'bingo-cell--marked': marked,
       'bingo-cell--empty': isEmpty,
       'bingo-cell--interactive': isInteractive,
+    }"
+    :style="{
+      '--cell-border': skinStore.activeSkin?.cell.border,
+      '--cell-hover': skinStore.activeSkin?.cell.hover,
+      '--cell-focus': skinStore.activeSkin?.cell.focus,
+      '--cell-empty': skinStore.activeSkin?.cell.empty,
+      '--cell-free': skinStore.activeSkin?.cell.free,
+      '--cell-marked': skinStore.activeSkin?.cell.marked,
+      '--cell-marked-text': skinStore.activeSkin?.cell.markedText,
     }"
     :role="isInteractive ? 'button' : undefined"
     :tabindex="isInteractive ? 0 : -1"
@@ -71,7 +76,7 @@ function handleKeydown(event: KeyboardEvent) {
 
 <style lang="scss" scoped>
 .bingo-cell {
-  border: 1px solid #333;
+  border: 1px solid var(--cell-border);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -84,11 +89,11 @@ function handleKeydown(event: KeyboardEvent) {
     cursor: pointer;
 
     &:hover:not(.bingo-cell--marked):not(.bingo-cell--free) {
-      background-color: #e3f2fd;
+      background-color: var(--cell-hover);
     }
 
     &:focus {
-      outline: 2px solid #1976d2;
+      outline: 2px solid var(--cell-focus);
       outline-offset: -2px;
     }
   }
@@ -98,31 +103,23 @@ function handleKeydown(event: KeyboardEvent) {
   }
 
   &--empty {
-    background-color: #ffebee;
+    background-color: var(--cell-empty);
     cursor: default;
   }
 
   &--free {
     font-size: 1rem;
-    background-color: #81c784;
+    background-color: var(--cell-free);
   }
 
   &--marked {
-    background-color: #4caf50;
-    color: white;
+    background-color: var(--cell-marked);
+    color: var(--cell-marked-text);
   }
 
   &__text {
     pointer-events: none;
   }
-}
-
-.bingo-cell--argentina.bingo-cell--empty {
-  background: #e1f5fe; /* Light blue background for Argentina skin */
-}
-
-.bingo-cell--colombia.bingo-cell--empty {
-  background: #b3e5fc;
 }
 
 @media print {

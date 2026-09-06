@@ -11,13 +11,7 @@ const skinStore = useSkinStore();
 </script>
 
 <template>
-  <div
-    class="bingo-card-90"
-    :class="{
-      'bingo-card-90--argentina': skinStore.currentSkinId === 'argentina',
-      'bingo-card-90--colombia': skinStore.currentSkinId === 'colombia',
-    }"
-  >
+  <div class="bingo-card-90" :style="{ '--card-border': skinStore.activeSkin?.card.border, '--card-bg': skinStore.activeSkin?.card.background }">
     <div class="bingo-grid-90">
       <div v-for="(row, rIndex) in card.grid" :key="rIndex" class="bingo-row-90">
         <bingo-cell
@@ -37,20 +31,11 @@ const skinStore = useSkinStore();
 
 <style scoped>
 .bingo-card-90 {
-  border: 4px solid #d32f2f; /* Red border typical of UK bingo tickets */
+  border: 4px solid var(--card-border);
   width: 100%;
   max-width: 600px;
-  background: white;
+  background: var(--card-bg);
   page-break-inside: avoid;
-}
-
-.bingo-card-90--argentina {
-  border-color: #03a9f4; /* Blue border for Argentina skin */
-}
-
-.bingo-card-90--colombia {
-  border-color: #1e88e5; /* Blue border for Colombia skin */
-  background: #fff8e1; /* Light yellow background for Colombia skin */
 }
 
 .bingo-grid-90 {

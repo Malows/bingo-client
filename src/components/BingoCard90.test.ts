@@ -1,9 +1,15 @@
-import { describe, it, expect } from 'vitest';
+import { beforeEach, describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
+import { createPinia, setActivePinia } from 'pinia';
 import BingoCard90 from './BingoCard90.vue';
 import { Bingo90Card } from '../models/Bingo90Card';
+import { useSkinStore } from '../stores/skin';
 
 describe('BingoCard90.vue', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia());
+  });
+
   // Helper to create a mock card
   const createMockCard = (): Bingo90Card => {
     return new Bingo90Card();
@@ -141,5 +147,22 @@ describe('BingoCard90.vue', () => {
     // Count empty cells (should be 12 = 27 - 15)
     const emptyCells = wrapper.findAll('.bingo-cell--empty');
     expect(emptyCells).toHaveLength(12);
+  });
+
+  it('should use the active skin tokens in the card styles', () => {
+    const store = useSkinStore();
+    store.setSkin('colombia');
+
+    const wrapper = mount(BingoCard90, {
+      props: { card: createMockCard() },
+      global: {
+        stubs: {
+          BingoCell: true,
+        },
+      },
+    });
+
+    const card = wrapper.find('.bingo-card-90');
+    expect(card.attributes('style')).toContain('--card-border');
   });
 });

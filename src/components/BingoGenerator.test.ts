@@ -2,12 +2,14 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { createPinia, setActivePinia } from 'pinia';
 import { Quasar } from 'quasar';
+import App from '../App.vue';
 import BingoGenerator from './BingoGenerator.vue';
 import GameModal from './GameModal.vue';
 import BingoCard75 from './BingoCard75.vue';
 import BingoCard90 from './BingoCard90.vue';
 import { BingoTypes } from '../models/BingoCard';
 import { useBingoStore } from '../stores/bingo';
+import { useSkinStore } from '../stores/skin';
 
 // Stub for QPageSticky since it requires QLayout parent
 const QPageStickyStub = {
@@ -159,5 +161,17 @@ describe('BingoGenerator.vue', () => {
     card.vm.$emit('toggle-mark', 0, 0);
 
     expect(toggleMarkSpy).toHaveBeenCalledWith(store.cards75[0]?.id, 0, 0);
+  });
+
+  it('should expose the active skin via the current app root data attribute', async () => {
+    const wrapper = mount(App);
+    const skinStore = useSkinStore();
+
+    skinStore.setSkin('colombia');
+    await wrapper.vm.$nextTick();
+
+    const appRoot = wrapper.find('#q-app');
+    expect(appRoot.exists()).toBe(true);
+    expect(appRoot.attributes('data-skin')).toBe('colombia');
   });
 });
