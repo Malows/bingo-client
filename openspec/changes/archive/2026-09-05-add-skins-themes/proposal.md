@@ -14,9 +14,11 @@ La aplicación ya tiene un primer intento de personalización visual a través d
 ## Capabilities
 
 ### New Capabilities
+
 - `visual-skins`: support for defining, selecting, and applying visual skins across the app shell and bingo cards.
 
 ### Modified Capabilities
+
 - None.
 
 ## Impact

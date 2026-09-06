@@ -112,13 +112,14 @@ export class Bingo90Card implements BingoCard {
     const grid: (number | null)[][] = Array.from({ length: ROWS }, () => Array(COLS).fill(null));
 
     // Calcular cuántos números por columna (al menos 1, máximo 3)
-    const colCounts = new Array(COLS).fill(1);
+    const colCounts = Array.from({ length: COLS }, () => 1);
     let remaining = TOTAL_NUMBERS - COLS;
 
     while (remaining > 0) {
       const idx = Math.floor(Math.random() * COLS);
-      if (colCounts[idx] < ROWS) {
-        colCounts[idx]++;
+      const currentCount = colCounts[idx];
+      if (currentCount !== undefined && currentCount < ROWS) {
+        colCounts[idx] = currentCount + 1;
         remaining--;
       }
     }
@@ -128,7 +129,7 @@ export class Bingo90Card implements BingoCard {
     for (let c = 0; c < COLS; c++) {
       const min = c === 0 ? 1 : c * COLUMN_RANGE;
       const max = c === 8 ? 90 : c * COLUMN_RANGE + COLUMN_RANGE - 1;
-      const count = colCounts[c];
+      const count = colCounts[c] ?? 1;
       const nums = this.getRandomNumbers(min, max, count).sort((a, b) => a - b);
       colNumbers.push(nums);
     }
@@ -139,11 +140,11 @@ export class Bingo90Card implements BingoCard {
 
     // Ordenar columnas por cantidad de números (más llenas primero)
     const colIndices = Array.from({ length: COLS }, (_, i) => i).sort(
-      (a, b) => colCounts[b] - colCounts[a],
+      (a, b) => (colCounts[b] ?? 0) - (colCounts[a] ?? 0),
     );
 
     for (const colIdx of colIndices) {
-      const count = colCounts[colIdx];
+      const count = colCounts[colIdx] ?? 1;
       const availableRows = [0, 1, 2].filter((r) => (rowCounts[r] ?? 0) < NUMBERS_PER_ROW);
 
       if (count === 3) {

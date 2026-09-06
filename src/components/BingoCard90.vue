@@ -11,7 +11,13 @@ const skinStore = useSkinStore();
 </script>
 
 <template>
-  <div class="bingo-card-90" :style="{ '--card-border': skinStore.activeSkin?.card.border, '--card-bg': skinStore.activeSkin?.card.background }">
+  <div
+    class="bingo-card-90"
+    :style="{
+      '--card-border': skinStore.activeSkin?.card.border,
+      '--card-bg': skinStore.activeSkin?.card.background,
+    }"
+  >
     <div class="bingo-grid-90">
       <div v-for="(row, rIndex) in card.grid" :key="rIndex" class="bingo-row-90">
         <bingo-cell

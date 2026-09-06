@@ -31,3 +31,19 @@
   --skin-cell-marked: #1e88e5;
   --skin-cell-marked-text: #ffffff;
 }
+
+#q-app[data-skin='lorieth'] {
+  --skin-header-bg: #7e57c2;
+  --skin-header-text: #ffffff;
+  --skin-card-border: #9575cd;
+  --skin-card-bg: #ffffff;
+  --skin-header-cell-bg: #7e57c2;
+  --skin-header-cell-text: #ffffff;
+  --skin-cell-border: #d1c4e9;
+  --skin-cell-hover: #f3e5f5;
+  --skin-cell-focus: #7e57c2;
+  --skin-cell-empty: #fbf7fc;
+  --skin-cell-free: #d1c4e9;
+  --skin-cell-marked: #8e24aa;
+  --skin-cell-marked-text: #ffffff;
+}

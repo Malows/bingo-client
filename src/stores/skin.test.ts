@@ -9,7 +9,7 @@ describe('useSkinStore', () => {
     setActivePinia(createPinia());
   });
 
-  it('should default to the Argentina skin', () => {
+  it('should default to the configured default skin', () => {
     const store = useSkinStore();
 
     expect(store.currentSkinId).toBe(DEFAULT_SKIN_ID);
@@ -33,7 +33,7 @@ describe('useSkinStore', () => {
 
   it('should accept valid skin IDs', () => {
     const store = useSkinStore();
-    const validIds: SkinId[] = ['argentina', 'colombia'];
+    const validIds: SkinId[] = ['argentina', 'colombia', 'lorieth'];
 
     validIds.forEach((skinId) => {
       store.setSkin(skinId);

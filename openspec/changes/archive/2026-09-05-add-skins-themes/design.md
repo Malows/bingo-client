@@ -5,11 +5,13 @@ The app already has a lightweight skin concept in `src/stores/skin.ts`, but it i
 ## Goals / Non-Goals
 
 **Goals:**
+
 - Establish a single source of truth for skin definitions and active skin selection.
 - Apply the selected skin consistently to the app shell and bingo cards.
 - Keep the design compatible with the existing Vue 3 + Pinia + Quasar architecture.
 
 **Non-Goals:**
+
 - Building a full theme editor or persistence layer for user-defined themes.
 - Supporting runtime switching of arbitrary CSS variables from the UI without a store-backed selection flow.
 

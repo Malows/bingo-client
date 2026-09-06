@@ -36,7 +36,7 @@ export const SKINS: Record<SkinId, BingoSkin> = {
     name: 'Colombia',
     title: 'Bingo Colombia',
     header: {
-      background: '#f2c94c',
+      background: '#fdce04',
       textColor: '#111111',
       accentStart: 'transparent',
       accentMiddle: '#ffeb3b',
@@ -63,30 +63,30 @@ export const SKINS: Record<SkinId, BingoSkin> = {
   },
   lorieth: {
     id: 'lorieth',
-    name: 'Cumple Lorieth',
-    title: 'Bingo Happy Birthday Lorieth!',
+    name: 'Cumple de Lori',
+    title: 'Cumple de Lori 🎉🥳🎂',
     header: {
-      background: '#81d4fa', // Azul cielo de la ilustración
+      background: '#7e57c2', // Violeta vibrante
       textColor: '#ffffff',
-      accentStart: '#7cb342', // Verde pasto
-      accentMiddle: '#f8bbd0', // Rosa pastel de la torta
-      accentEnd: '#81d4fa',
+      accentStart: '#ab47bc',
+      accentMiddle: '#ce93d8', // Lila pastel
+      accentEnd: '#7e57c2',
     },
     card: {
-      border: '#f06292', // Borde rosado festivo
+      border: '#9575cd', // Amatista suave
       background: '#ffffff',
-      headerBackground: '#4fc3f7', // Azul Pengu brillante
+      headerBackground: '#7e57c2', // Violeta
       headerText: '#ffffff',
-      headerBorder: '#f06292',
-      cellBorder: '#e0e0e0',
+      headerBorder: '#7e57c2',
+      cellBorder: '#d1c4e9', // Lila claro
     },
     cell: {
-      border: '#e0e0e0',
-      hover: '#e1f5fe', // Celeste tenue al pasar el mouse
-      focus: '#4fc3f7',
-      empty: '#fff8e1', // Crema
-      free: '#f8bbd0', // Rosa pastel para casillero libre
-      marked: '#ec407a', // Magenta/Rosa para celda marcada
+      border: '#d1c4e9',
+      hover: '#f3e5f5', // Lila tenue al pasar el mouse
+      focus: '#7e57c2',
+      empty: '#fbf7fc', // Crema lavanda tenue
+      free: '#d1c4e9', // Lavanda pastel para casillero libre
+      marked: '#8e24aa', // Púrpura vivo para celda marcada
       markedText: '#ffffff',
     },
     headerComponent: 'LoriethHeader',

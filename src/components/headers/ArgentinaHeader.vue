@@ -45,7 +45,15 @@ const skinStore = useSkinStore();
   pointer-events: none;
   z-index: 1;
   overflow: hidden;
-  background: linear-gradient(135deg, transparent 0%, transparent 35%, white 35%, white 85%, var(--header-bg) 85%, var(--header-bg) 100%);
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    transparent 35%,
+    white 35%,
+    white 85%,
+    var(--header-bg) 85%,
+    var(--header-bg) 100%
+  );
 }
 
 .sun-icon {

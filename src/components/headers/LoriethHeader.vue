@@ -9,12 +9,12 @@ const skinStore = useSkinStore();
     class="header-shell"
     :style="{
       '--header-bg': skinStore.activeSkin?.header.background,
+      '--header-text': skinStore.activeSkin?.header.textColor,
       '--header-accent': skinStore.activeSkin?.header.accentMiddle,
     }"
   >
     <div class="header-title">
       {{ skinStore.activeSkin?.title }}
-      <span class="birthday-badge">🎂</span>
     </div>
 
     <div class="header-banner">
@@ -32,7 +32,7 @@ const skinStore = useSkinStore();
   min-height: 64px;
   padding: 0 1rem;
   background: var(--header-bg);
-  color: #2c3e50;
+  color: var(--header-text);
   overflow: hidden;
 }
 
@@ -44,12 +44,8 @@ const skinStore = useSkinStore();
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #1a252f;
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
-}
-
-.birthday-badge {
-  font-size: 1.2rem;
+  color: var(--header-text);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .header-banner {

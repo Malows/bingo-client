@@ -1,14 +1,17 @@
 {
   "name": "bingo-client",
   "version": "0.0.1",
+  "private": true,
   "description": "A Quasar Project",
-  "productName": "Bingo Client",
   "author": "Juan Manuel Cruz <cruz.jm.stafe@gmail.com>",
   "type": "module",
-  "private": true,
   "scripts": {
+    "check": "vue-tsc -b",
     "lint": "eslint -c ./eslint.config.js \"./src*/**/*.{ts,js,cjs,mjs,vue}\"",
-    "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
+    "oxlint": "oxlint",
+    "oxlint:fix": "oxlint --fix",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
@@ -39,6 +42,7 @@
     "eslint-plugin-vue": "^10.4.0",
     "globals": "^16.4.0",
     "happy-dom": "^20.0.11",
+    "oxlint": "^1.81.0",
     "prettier": "^3.3.3",
     "typescript": "^5.9.2",
     "vite-plugin-checker": "^0.11.0",
@@ -50,5 +54,6 @@
     "node": "^28 || ^26 || ^24 || ^22 || ^20",
     "npm": ">= 6.13.4",
     "yarn": ">= 1.21.1"
-  }
+  },
+  "productName": "Bingo Client"
 }
