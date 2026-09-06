@@ -19,7 +19,7 @@ const headerComponent = computed(() => {
 
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated :style="{ background: skinStore.activeSkin?.header.background }">
+    <q-header elevated class="app-header">
       <component :is="headerComponent" />
     </q-header>
 
@@ -28,3 +28,9 @@ const headerComponent = computed(() => {
     </q-page-container>
   </q-layout>
 </template>
+
+<style scoped>
+.app-header {
+  background: var(--header-bg);
+}
+</style>

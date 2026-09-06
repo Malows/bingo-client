@@ -1,49 +1,65 @@
 // app global css in SCSS form
 
-:root {
-  --skin-header-bg: #03a9f4;
-  --skin-header-text: #ffffff;
-  --skin-card-border: #333333;
-  --skin-card-bg: #ffffff;
-  --skin-header-cell-bg: #1976d2;
-  --skin-header-cell-text: #ffffff;
-  --skin-cell-border: #333333;
-  --skin-cell-hover: #e3f2fd;
-  --skin-cell-focus: #1976d2;
-  --skin-cell-empty: #ffebee;
-  --skin-cell-free: #81c784;
-  --skin-cell-marked: #4caf50;
-  --skin-cell-marked-text: #ffffff;
+// -------------------------------------------------------------
+// Skin: Argentina (Bingo Locril Patrio)
+// -------------------------------------------------------------
+:root,
+#q-app[data-skin='argentina'] {
+  --header-bg: #03a9f4; // Celeste patrio
+  --header-text: #ffffff; // Blanco
+  --header-accent: #03a9f4;
+  --card-border: #333333; // Borde exterior oscuro
+  --card-bg: #ffffff;
+  --card-header-bg: #1976d2; // Azul profundo de cabecera B-I-N-G-O
+  --card-header-text: #ffffff;
+  --card-header-border: #333333;
+  --cell-border: #333333;
+  --cell-hover: #b3e5fc; // Celeste tenue al pasar el mouse
+  --cell-focus: #1976d2;
+  --cell-empty: #e1f5fe; // Celeste claro para casillero vacío
+  --cell-free: #fdb813; // Amarillo dorado del Sol de Mayo
+  --cell-marked: #1b5e20; // Verde laurel profundo del Escudo Nacional
+  --cell-marked-text: #ffffff;
 }
 
+// -------------------------------------------------------------
+// Skin: Colombia (Bingo Colombia)
+// -------------------------------------------------------------
 #q-app[data-skin='colombia'] {
-  --skin-header-bg: #f2c94c;
-  --skin-header-text: #111111;
-  --skin-card-border: #1e88e5;
-  --skin-card-bg: #ffffff;
-  --skin-header-cell-bg: #1e88e5;
-  --skin-header-cell-text: #ffffff;
-  --skin-cell-border: #1e88e5;
-  --skin-cell-hover: #fff8e1;
-  --skin-cell-focus: #f2c94c;
-  --skin-cell-empty: #f3e5f5;
-  --skin-cell-free: #8bc34a;
-  --skin-cell-marked: #1e88e5;
-  --skin-cell-marked-text: #ffffff;
+  --header-bg: #fdce04; // Amarillo bandera
+  --header-text: #111111; // Contraste oscuro
+  --header-accent: #1e88e5; // Azul bandera
+  --card-border: #1e88e5; // Azul borde de tarjeta
+  --card-bg: #ffffff;
+  --card-header-bg: #1e88e5; // Azul cabecera
+  --card-header-text: #ffffff;
+  --card-header-border: #1e88e5;
+  --cell-border: #1e88e5;
+  --cell-hover: #fff8e1; // Amarillo pastel al pasar el mouse
+  --cell-focus: #f2c94c;
+  --cell-empty: #f3e5f5;
+  --cell-free: #8bc34a; // Verde para casillero libre
+  --cell-marked: #1e88e5; // Azul para celda marcada
+  --cell-marked-text: #ffffff;
 }
 
+// -------------------------------------------------------------
+// Skin: Lorieth (Cumple de Lori 🎉🥳🎂)
+// -------------------------------------------------------------
 #q-app[data-skin='lorieth'] {
-  --skin-header-bg: #7e57c2;
-  --skin-header-text: #ffffff;
-  --skin-card-border: #9575cd;
-  --skin-card-bg: #ffffff;
-  --skin-header-cell-bg: #7e57c2;
-  --skin-header-cell-text: #ffffff;
-  --skin-cell-border: #d1c4e9;
-  --skin-cell-hover: #f3e5f5;
-  --skin-cell-focus: #7e57c2;
-  --skin-cell-empty: #fbf7fc;
-  --skin-cell-free: #d1c4e9;
-  --skin-cell-marked: #8e24aa;
-  --skin-cell-marked-text: #ffffff;
+  --header-bg: #7e57c2; // Violeta vibrante
+  --header-text: #ffffff;
+  --header-accent: #ce93d8; // Lila pastel de la ilustración / banner
+  --card-border: #9575cd; // Amatista suave
+  --card-bg: #ffffff;
+  --card-header-bg: #7e57c2; // Violeta
+  --card-header-text: #ffffff;
+  --card-header-border: #7e57c2;
+  --cell-border: #d1c4e9; // Lila claro
+  --cell-hover: #f3e5f5; // Lila tenue al pasar el mouse
+  --cell-focus: #7e57c2;
+  --cell-empty: #fbf7fc; // Crema lavanda tenue
+  --cell-free: #d1c4e9; // Lavanda pastel para casillero libre
+  --cell-marked: #8e24aa; // Púrpura vivo para celda marcada
+  --cell-marked-text: #ffffff;
 }

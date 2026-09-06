@@ -3,7 +3,6 @@ import { mount } from '@vue/test-utils';
 import { createPinia, setActivePinia } from 'pinia';
 import BingoCard90 from './BingoCard90.vue';
 import { Bingo90Card } from '../models/Bingo90Card';
-import { useSkinStore } from '../stores/skin';
 
 describe('BingoCard90.vue', () => {
   beforeEach(() => {
@@ -149,10 +148,7 @@ describe('BingoCard90.vue', () => {
     expect(emptyCells).toHaveLength(12);
   });
 
-  it('should use the active skin tokens in the card styles', () => {
-    const store = useSkinStore();
-    store.setSkin('colombia');
-
+  it('should render the card container with the bingo-card-90 class', () => {
     const wrapper = mount(BingoCard90, {
       props: { card: createMockCard() },
       global: {
@@ -163,6 +159,6 @@ describe('BingoCard90.vue', () => {
     });
 
     const card = wrapper.find('.bingo-card-90');
-    expect(card.attributes('style')).toContain('--card-border');
+    expect(card.exists()).toBe(true);
   });
 });

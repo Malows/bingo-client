@@ -3,7 +3,6 @@ import { mount } from '@vue/test-utils';
 import { createPinia, setActivePinia } from 'pinia';
 import BingoCard75 from './BingoCard75.vue';
 import { Bingo75Card } from '../models/Bingo75Card';
-import { useSkinStore } from '../stores/skin';
 
 describe('BingoCard75.vue', () => {
   beforeEach(() => {
@@ -91,6 +90,7 @@ describe('BingoCard75.vue', () => {
 
     const centerCell = wrapper.findAll('.bingo-row')[2]?.findAll('.bingo-cell')[2];
     expect(centerCell?.classes()).toContain('bingo-cell--free');
+    expect(centerCell?.classes()).not.toContain('bingo-cell--marked');
   });
 
   it('should emit toggle-mark event when cell is clicked', async () => {
@@ -123,10 +123,7 @@ describe('BingoCard75.vue', () => {
     expect(firstCell?.classes()).toContain('bingo-cell--marked');
   });
 
-  it('should use the active skin tokens in the card styles', () => {
-    const store = useSkinStore();
-    store.setSkin('colombia');
-
+  it('should render the card container with the bingo-card-75 class', () => {
     const wrapper = mount(BingoCard75, {
       props: { card: createMockCard() },
       global: {
@@ -137,6 +134,6 @@ describe('BingoCard75.vue', () => {
     });
 
     const card = wrapper.find('.bingo-card-75');
-    expect(card.attributes('style')).toContain('--card-border');
+    expect(card.exists()).toBe(true);
   });
 });

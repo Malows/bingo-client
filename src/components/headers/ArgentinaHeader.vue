@@ -5,7 +5,7 @@ const skinStore = useSkinStore();
 </script>
 
 <template>
-  <div class="header-shell" :style="{ '--header-bg': skinStore.activeSkin?.header.background }">
+  <div class="header-shell">
     <div class="header-title">{{ skinStore.activeSkin?.title }}</div>
     <div class="header-flag">
       <img src="~/assets/sol-de-mayo.svg" alt="Sol de Mayo" class="sun-icon" />

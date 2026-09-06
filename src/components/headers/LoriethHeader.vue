@@ -5,14 +5,7 @@ const skinStore = useSkinStore();
 </script>
 
 <template>
-  <div
-    class="header-shell"
-    :style="{
-      '--header-bg': skinStore.activeSkin?.header.background,
-      '--header-text': skinStore.activeSkin?.header.textColor,
-      '--header-accent': skinStore.activeSkin?.header.accentMiddle,
-    }"
-  >
+  <div class="header-shell">
     <div class="header-title">
       {{ skinStore.activeSkin?.title }}
     </div>

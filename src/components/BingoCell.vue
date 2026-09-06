@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { BingoTypes } from 'src/models';
-import { useSkinStore } from 'src/stores/skin';
 
 const props = defineProps<{
   type: BingoTypes;
@@ -12,7 +11,6 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{ (e: 'toggle-mark', row: number, col: number): void }>();
-const skinStore = useSkinStore();
 
 const isEmpty = computed(() => props.value === null);
 const isFree = computed(() => props.value === 'FREE');
@@ -47,18 +45,9 @@ function handleKeydown(event: KeyboardEvent) {
       'bingo-cell--90': type === BingoTypes.BINGO_90,
       'bingo-cell--75': type === BingoTypes.BINGO_75,
       'bingo-cell--free': isFree,
-      'bingo-cell--marked': marked,
+      'bingo-cell--marked': marked && !isFree,
       'bingo-cell--empty': isEmpty,
       'bingo-cell--interactive': isInteractive,
-    }"
-    :style="{
-      '--cell-border': skinStore.activeSkin?.cell.border,
-      '--cell-hover': skinStore.activeSkin?.cell.hover,
-      '--cell-focus': skinStore.activeSkin?.cell.focus,
-      '--cell-empty': skinStore.activeSkin?.cell.empty,
-      '--cell-free': skinStore.activeSkin?.cell.free,
-      '--cell-marked': skinStore.activeSkin?.cell.marked,
-      '--cell-marked-text': skinStore.activeSkin?.cell.markedText,
     }"
     :role="isInteractive ? 'button' : undefined"
     :tabindex="isInteractive ? 0 : -1"
@@ -107,14 +96,15 @@ function handleKeydown(event: KeyboardEvent) {
     cursor: default;
   }
 
-  &--free {
-    font-size: 1rem;
-    background-color: var(--cell-free);
-  }
-
   &--marked {
     background-color: var(--cell-marked);
     color: var(--cell-marked-text);
+  }
+
+  &--free {
+    font-size: 1rem;
+    background-color: var(--cell-free);
+    color: #1e293b;
   }
 
   &__text {

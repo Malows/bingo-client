@@ -73,14 +73,7 @@ export class Bingo90Card implements BingoCard {
 
   private isValidPosition(row: number, col: number): boolean {
     const { ROWS, COLS } = BINGO_90_CONSTANTS;
-    return (
-      row >= 0 &&
-      row < ROWS &&
-      col >= 0 &&
-      col < COLS &&
-      this.grid[row] !== undefined &&
-      this.grid[row][col] !== undefined
-    );
+    return row >= 0 && row < ROWS && col >= 0 && col < COLS && this.grid[row]?.[col] !== undefined;
   }
 
   private generateGrid(): BingoCell[][] {
