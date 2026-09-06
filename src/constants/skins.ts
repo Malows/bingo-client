@@ -61,10 +61,42 @@ export const SKINS: Record<SkinId, BingoSkin> = {
     },
     headerComponent: 'ColombiaHeader',
   },
+  lorieth: {
+    id: 'lorieth',
+    name: 'Cumple Lorieth',
+    title: 'Bingo Happy Birthday Lorieth!',
+    header: {
+      background: '#81d4fa', // Azul cielo de la ilustración
+      textColor: '#ffffff',
+      accentStart: '#7cb342', // Verde pasto
+      accentMiddle: '#f8bbd0', // Rosa pastel de la torta
+      accentEnd: '#81d4fa',
+    },
+    card: {
+      border: '#f06292', // Borde rosado festivo
+      background: '#ffffff',
+      headerBackground: '#4fc3f7', // Azul Pengu brillante
+      headerText: '#ffffff',
+      headerBorder: '#f06292',
+      cellBorder: '#e0e0e0',
+    },
+    cell: {
+      border: '#e0e0e0',
+      hover: '#e1f5fe', // Celeste tenue al pasar el mouse
+      focus: '#4fc3f7',
+      empty: '#fff8e1', // Crema
+      free: '#f8bbd0', // Rosa pastel para casillero libre
+      marked: '#ec407a', // Magenta/Rosa para celda marcada
+      markedText: '#ffffff',
+    },
+    headerComponent: 'LoriethHeader',
+  },
 };
 
-export const DEFAULT_SKIN_ID: SkinId = 'argentina';
+export const DEFAULT_SKIN_ID: SkinId = 'lorieth';
+
+const AVAILABLE_SKINS = new Set(['argentina', 'colombia', 'lorieth']);
 
 export function isSkinId(value: string): value is SkinId {
-  return value === 'argentina' || value === 'colombia';
+  return AVAILABLE_SKINS.has(value);
 }

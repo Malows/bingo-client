@@ -3,13 +3,17 @@ import { computed } from 'vue';
 import { useSkinStore } from 'src/stores/skin';
 import ArgentinaHeader from 'components/headers/ArgentinaHeader.vue';
 import ColombiaHeader from 'components/headers/ColombiaHeader.vue';
+import LoriethHeader from 'components/headers/LoriethHeader.vue';
 
 const skinStore = useSkinStore();
 
 const headerComponent = computed(() => {
-  return skinStore.activeSkin?.headerComponent === 'ColombiaHeader'
-    ? ColombiaHeader
-    : ArgentinaHeader;
+  const headers = {
+    ArgentinaHeader,
+    ColombiaHeader,
+    LoriethHeader,
+  };
+  return headers[skinStore.activeSkin?.headerComponent ?? 'ArgentinaHeader'];
 });
 </script>
 

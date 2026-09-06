@@ -1,4 +1,4 @@
-export type SkinId = 'argentina' | 'colombia';
+export type SkinId = 'argentina' | 'colombia' | 'lorieth';
 
 export interface BingoSkin {
   id: SkinId;
@@ -28,5 +28,5 @@ export interface BingoSkin {
     marked: string;
     markedText: string;
   };
-  headerComponent: 'ArgentinaHeader' | 'ColombiaHeader';
+  headerComponent: 'ArgentinaHeader' | 'ColombiaHeader' | 'LoriethHeader';
 }
