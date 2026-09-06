@@ -8,7 +8,7 @@ export default defineConfig({
     vue(),
     quasar({
       sassVariables: 'src/css/quasar.variables.scss',
-    }),
+    }) as never,
   ],
   test: {
     globals: true,
