@@ -1,1 +1,33 @@
 // app global css in SCSS form
+
+:root {
+  --skin-header-bg: #03a9f4;
+  --skin-header-text: #ffffff;
+  --skin-card-border: #333333;
+  --skin-card-bg: #ffffff;
+  --skin-header-cell-bg: #1976d2;
+  --skin-header-cell-text: #ffffff;
+  --skin-cell-border: #333333;
+  --skin-cell-hover: #e3f2fd;
+  --skin-cell-focus: #1976d2;
+  --skin-cell-empty: #ffebee;
+  --skin-cell-free: #81c784;
+  --skin-cell-marked: #4caf50;
+  --skin-cell-marked-text: #ffffff;
+}
+
+#q-app[data-skin='colombia'] {
+  --skin-header-bg: #f2c94c;
+  --skin-header-text: #111111;
+  --skin-card-border: #1e88e5;
+  --skin-card-bg: #ffffff;
+  --skin-header-cell-bg: #1e88e5;
+  --skin-header-cell-text: #ffffff;
+  --skin-cell-border: #1e88e5;
+  --skin-cell-hover: #fff8e1;
+  --skin-cell-focus: #f2c94c;
+  --skin-cell-empty: #f3e5f5;
+  --skin-cell-free: #8bc34a;
+  --skin-cell-marked: #1e88e5;
+  --skin-cell-marked-text: #ffffff;
+}
