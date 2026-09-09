@@ -21,7 +21,7 @@ export const SKINS: Record<SkinId, BingoSkin> = {
   },
 };
 
-export const DEFAULT_SKIN_ID: SkinId = 'argentina';
+export const DEFAULT_SKIN_ID: SkinId = 'lorieth';
 
 const AVAILABLE_SKINS = new Set(['argentina', 'colombia', 'lorieth']);
 

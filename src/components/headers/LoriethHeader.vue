@@ -11,7 +11,7 @@ const skinStore = useSkinStore();
     </div>
 
     <div class="header-banner">
-      <img src="~/assets/pengu-birthday.jpeg" alt="Pengu Birthday" class="pengu-icon" />
+      <img src="~/assets/pengu-birthday.webp" alt="Pengu Birthday" class="pengu-icon" />
     </div>
   </div>
 </template>
@@ -45,7 +45,7 @@ const skinStore = useSkinStore();
   position: absolute;
   top: 0;
   right: 0;
-  width: 240px;
+  width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
@@ -53,24 +53,16 @@ const skinStore = useSkinStore();
   pointer-events: none;
   z-index: 1;
   overflow: hidden;
-  background: linear-gradient(
-    135deg,
-    transparent 0%,
-    transparent 25%,
-    var(--header-accent) 25%,
-    var(--header-accent) 80%,
-    var(--header-bg) 80%,
-    var(--header-bg) 100%
-  );
+  background: linear-gradient(135deg, transparent, var(--header-accent));
 }
 
 .pengu-icon {
-  --size: 110px;
+  --size: 100px;
   position: relative;
   width: var(--size);
   height: auto;
-  right: 20px;
-  top: 5px;
+  right: 10px;
+  top: -5px;
   filter: drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.15));
 }
 </style>
