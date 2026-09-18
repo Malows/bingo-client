@@ -1,7 +1,8 @@
 // Configuration for your app
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file
 
-import { defineConfig } from '#q-app/wrappers';
+import { fileURLToPath } from 'node:url';
+import { defineConfig } from '#q-app';
 
 export default defineConfig((/* ctx */) => {
   return {
@@ -32,6 +33,18 @@ export default defineConfig((/* ctx */) => {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#build
     build: {
+      // Bare `src`, `components`, `layouts`, `pages` & `~` aliases were
+      // framework defaults in v2 but not in v3; the codebase imports with
+      // them (see vitest.config.ts resolve.alias)
+      alias: {
+        src: fileURLToPath(new URL('./src', import.meta.url)),
+        '~': fileURLToPath(new URL('./src', import.meta.url)),
+        components: fileURLToPath(new URL('./src/components', import.meta.url)),
+        layouts: fileURLToPath(new URL('./src/layouts', import.meta.url)),
+        pages: fileURLToPath(new URL('./src/pages', import.meta.url)),
+        assets: fileURLToPath(new URL('./src/assets', import.meta.url)),
+      },
+
       target: {
         browser: ['es2022', 'firefox115', 'chrome115', 'safari14'],
         node: 'node20',

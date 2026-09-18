@@ -7,3 +7,4 @@ allowBuilds:
 
 minimumReleaseAgeExclude:
   - quasar@2.33.0
+  - '@quasar/app-vite@3.9.0'
