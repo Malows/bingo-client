@@ -82,8 +82,9 @@ describe('BingoGenerator.vue', () => {
   it('should call window.print when printCards is called', () => {
     const wrapper = mountComponent();
 
-    // Mock window.print
+    // Mock window.print (happy-dom doesn't implement it)
     window.print = vi.fn();
+    // eslint-disable-next-line @typescript-eslint/unbound-method -- accessing the mock, not the native method
     const printSpy = window.print as ReturnType<typeof vi.fn>;
 
     // Access component method
